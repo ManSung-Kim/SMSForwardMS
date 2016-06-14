@@ -1,36 +1,34 @@
 package com.jactlab.smsforwardms;
 
 import com.jactlab.smsforwardms.service.SMSReceiverMS;
+import com.jactlab.smsforwardms.service.SMSServiceMS;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
 public class MainActivity extends Activity {
 
-	final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
-	
-	private BroadcastReceiver pmSMSReceiver = null;
+	private Intent pmIntentSMSService = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		pmSMSReceiver = new SMSReceiverMS();
-		IntentFilter lIFilter = new IntentFilter(SMS_RECEIVED);
-		registerReceiver(pmSMSReceiver, lIFilter);
+		pmIntentSMSService = new Intent(this, SMSServiceMS.class);
+		
+		startService(pmIntentSMSService);
 	}
 
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		if( pmSMSReceiver != null ) {
-			unregisterReceiver(pmSMSReceiver);
-			pmSMSReceiver = null;
-		}
+		
+		// btn 만들어서 stopservice 가능하게 만들기
 	}
 	
 }
